@@ -1,0 +1,42 @@
+<html>
+<head>
+<title>hello, WORLD WIDE WEB</title>
+</head> 
+
+<body>
+<H1 align=center>SIBGUTI</H1>
+<br><br>  
+<H3>IP-513</H3>
+<p align = "right">
+<i>О сколько нам открытий чудных<br>
+Готовят просвещенья дух<br>
+И опыт, сын ошибок трудных,<br>
+И гений, парадоксов друг,<br>
+И случай, бог изобретатель.</i>
+<br>
+<br>
+</p>
+<small>
+<p align = "right">А.С. Пушкин </p>
+</small>
+<br>
+<H1>Zagolovok </H1>
+<br>
+<i>Kursiv</i>
+<HR COLOR=blue SIZE=2>
+<b>ZHIRNIY SCHRIFT</b>
+<HR COLOR=red SIZE=2>
+<TT>Pechatnaya maschinka</TT>
+<HR COLOR=yellow SIZE=2>
+<b i>Zhirniy kursiv</b /i>
+<HR COLOR=green SIZE=2>
+<b TT>Zhirnaya pechatnaya maschinka</b /TT>
+<HR COLOR=brown SIZE=2>
+<i TT>Kursiv + Pechantaya maschinka</i /TT>
+<HR COLOR=purple SIZE=2 WIDTH = 50% align = left>
+<U>Podcherknut</U>
+<HR COLOR=#00ff00 SIZE=2>
+<s>Zacherknut</s>
+
+</body>
+</html>
