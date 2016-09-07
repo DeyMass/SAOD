@@ -1,0 +1,236 @@
+#include <iostream>
+#include <clocale>
+#include <graphics.h>
+const int N=40;
+int H;
+struct tree {
+	int data;
+	tree * left;
+	tree * right;
+};
+
+void FillInc(int a[], int n) {
+	for (int i = 0; i < n; i++)
+		a[i] = i;
+}
+
+void PrintMas(int a[], int n) {
+	for (int i = 0; i < n; i++)
+		printf("%i ",a[i]);
+}
+
+tree* isd_tree(int *a, int left, int right) {
+	if (left > right)
+		return NULL;
+	int m = (left + right) / 2;
+	tree *p = new tree;
+	p->data = a[m];
+	p->left = isd_tree(a, left, m - 1);
+	p->right = isd_tree(a, m + 1, right);
+	return p;
+}
+
+
+
+void print_tree(tree* p) {
+	if (p != NULL) {
+		print_tree(p->left);
+		 printf("%i ",p->data);
+		print_tree(p->right);
+
+	}
+}
+
+	void printg(tree* p,int height,int width) {
+		int x=width;
+		static int y=height;
+		settextstyle(1,0,1);
+		if (p) {
+
+			//printg(p->left,y,700);
+			bgiout<<p->data;
+			outstreamxy(x/2,0);
+			if (p->left){
+			moverel(0,10);
+			linerel(40,10);
+			printg(p->left,x,y+=20);
+			//moverel(-60,-20);
+			}
+			if (p->right){
+			moverel(0,10);
+			linerel(-40,10);
+			printg(p->right,x,y);
+			//moverel(50,-20);
+			}
+			  //printg(p->right,y,700);
+
+		}
+	else{
+}
+}
+
+
+	int shir(int n){
+		if (n <= 1) return 1;
+		if (n == 2) return 5;
+		return shir(n-1) * 2 + 1;
+}
+
+
+void graphtree(tree *head, int xhead, int yhead, int level){
+	//bar(xhead, yhead, xhead + 20, yhead + 20);
+	int x,y,k;
+	settextstyle(rand()%6,0,1);
+	setcolor(COLOR(rand()%100+155,rand()%100+155,rand()%100+155));
+	k = shir(H - level) / 4;
+	settextstyle (10,0,1);
+	bgiout << head->data;
+	outstreamxy(xhead + 2, yhead + 2);
+	if (head->left){
+		x = xhead;
+		y = yhead + 20;
+		line(x, y, x - 20 * k, y + 20);
+		graphtree(head->left, x - 20 * k - 20, y + 20, level + 1);
+	}
+	if (head->right){
+		x = xhead + 20;
+		y = yhead + 20;
+		line(x, y, x + 20 * k, y + 20);
+		graphtree(head->right, x + 20 * k, y + 20, level + 1);
+	}
+}
+
+int max(int a, int b){
+	if (a>b) return a;
+	else return b;
+	}
+
+int height_tree(tree* p){
+	int height=0;
+	if (p==NULL) height=0;
+	else height=1+max(height_tree(p->left),height_tree(p->right));
+	return height;
+	}
+
+int sum_tree(tree* p) {
+	static int sum = 0;
+	if (p != NULL) {
+		sum_tree(p->left);
+		sum_tree(p->right);
+		sum += p->data;
+	}
+	return sum;
+}
+
+bool DP(tree* p){
+	 bool rez = true;
+
+		if (p!=NULL && (p->left != NULL && (
+					   (p->data <= p->left->data || !DP(p->left))
+					   || (p->right != NULL &&
+					   (p->data >= p->right->data || !DP(p->right))))
+					   ))
+					   rez = false;
+	  return rez;
+	 }
+
+
+
+int tree_size(tree* p) {
+	static int size = 0;
+	if (p == NULL)
+		return size;
+	else {
+		tree_size(p->left);
+		tree_size(p->right);
+		size++;
+	}
+	return size;
+}
+
+tree* search(tree* root,int key){
+	tree* p = root;
+	while(p != NULL){
+		if (key < p->data){ p = p->left;
+		}
+		 else if (key > p->data) p = p->right;
+			else break;
+	}
+		return p;
+	}
+
+
+tree* Delete(tree* root, int key){
+	tree** p = &root;
+	tree *q, *S, *r;
+
+
+	while(*p != NULL){
+		if (key < (*p)->left->data) p = &((*p)->left);
+		 else if (key > (*p)->right->data) p = &((*p)->right);
+			else break;
+        }
+
+		if (*p != NULL){
+			q = *p;
+			if (q->left == NULL) *p = q->right;
+			else{ if (q->right == NULL) *p = q->left;
+			else{
+            r = q->left;
+            S = q;
+       	    while (r->right != NULL){
+				S = r;
+				r = r->right;
+				}
+
+			S->right = r->left;
+			r->left = q->left;
+			r->right = q->right;
+			*p=r;
+      }
+
+
+
+	 delete(q);
+  }
+     return root;
+}
+}
+
+
+
+int main() {
+	tree * root = NULL;
+	int a[N];
+	FillInc(a,N);
+	PrintMas(a, N);
+
+
+	printf("\nISD:\n");
+	root = isd_tree(a, 0, N-1);
+	print_tree(root);
+
+	printf("Chto ischem?\n");
+	int key;
+	scanf("%i",&key);
+
+	tree* rezSearch = Delete(root,key);
+
+	if (rezSearch == NULL)
+	   printf("\nNet takogo\n\n");
+	else
+		printf("\nest takoe po adresy %i\n\n",rezSearch->data);
+	if (DP(root))
+	   printf("\nEto Derevo poiska!\n");
+	else
+		printf("\nEto ne derevo poiska :(\n");
+	printf("size: %i\n",tree_size(root));
+	printf("ContSum: %i\nHeight: %i\n", sum_tree(root),height_tree(root));
+  //  system("pause");
+  H=height_tree(root);
+	int h=height_tree(root)*50;
+	initwindow(1920,h);
+	graphtree(root,960,20,1);
+	getch();
+	return 0;
+}
